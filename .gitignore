@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+privatekey
+publickey
+.DS_Store
+

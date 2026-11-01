@@ -1,0 +1,16 @@
+{
+  "name": "tf2-keys-codecases",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Small, dependency-free engineering case studies extracted from marketplace problems.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/daily-reward/engine.js && node --check src/realtime/chat-session.js && node --check src/reporting/order-metrics-pipeline.js && node --check src/security/policy.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
+
