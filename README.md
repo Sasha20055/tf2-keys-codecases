@@ -1,6 +1,14 @@
 # Engineering code cases
 
-This repository contains small, dependency-free examples of engineering approaches used in a marketplace-style application. It is intentionally **not** a copy of a production application: it contains no credentials, customer data, payment-provider code, live domains, or deployment configuration.
+This repository contains selected, sanitized excerpts and small test harnesses from a marketplace-style application. It is intentionally **not** a runnable copy of the production application: it contains no credentials, customer data, payment-provider code, live domains, or deployment configuration.
+
+## Production excerpts
+
+The code in `production-excerpts/` preserves the structure and implementation approach of the original project. Only operational details were removed or replaced: live domains, persistence adapters, authentication setup, and provider-specific integrations.
+
+- `frontend/useChat.js` — the original React hook structure for Socket.IO connection lifecycle, message history, presence and send cooldown.
+- `backend/chatSocketCore.js` — the original room/presence and token-bucket flow, extracted from the Socket.IO server so its persistence boundary can be supplied by an application.
+- `backend/roulette.js` — the original weighted-prize algorithm, including the production weights and `crypto.randomInt` selection.
 
 ## Included cases
 
