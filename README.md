@@ -1,43 +1,43 @@
-# Engineering code cases
+# Инженерные примеры кода
 
-This repository contains selected, sanitized excerpts and small test harnesses from a marketplace-style application. It is intentionally **not** a runnable copy of the production application: it contains no credentials, customer data, payment-provider code, live domains, or deployment configuration.
+Репозиторий содержит выбранные, обезличенные фрагменты и небольшие тестовые примеры из приложения в стиле маркетплейса. Это намеренно **не** разворачиваемая копия production-приложения: здесь нет учётных данных, данных пользователей, кода платёжных провайдеров, боевых доменов и конфигурации деплоя.
 
-## Production excerpts
+## Фрагменты production-кода
 
-The code in `production-excerpts/` preserves the structure and implementation approach of the original project. Only operational details were removed or replaced: live domains, persistence adapters, authentication setup, and provider-specific integrations.
+Код в `production-excerpts/` сохраняет структуру и подходы исходного проекта. Были удалены или заменены только детали окружения: боевые домены, адаптеры хранения данных, настройка авторизации и интеграции, специфичные для внешних провайдеров.
 
-- `frontend/useChat.js` — the original React hook structure for Socket.IO connection lifecycle, message history, presence and send cooldown.
-- `backend/chatSocketCore.js` — the original room/presence and token-bucket flow, extracted from the Socket.IO server so its persistence boundary can be supplied by an application.
-- `backend/roulette.js` — the original weighted-prize algorithm, including the production weights and `crypto.randomInt` selection.
+- `frontend/useChat.js` — React hook для жизненного цикла Socket.IO-соединения, истории сообщений, presence и ограничения частоты отправки.
+- `backend/chatSocketCore.js` — логика комнат, presence и token bucket из Socket.IO-сервера, выделенная так, чтобы хранение данных задавалось приложением.
+- `backend/roulette.js` — алгоритм взвешенного выбора приза с исходными весами и выбором через `crypto.randomInt`.
 
-## Included cases
+## Примеры в репозитории
 
-| Case | What it demonstrates |
+| Пример | Что демонстрирует |
 | --- | --- |
-| `daily-reward` | Weighted prize selection with an injected random source, UTC daily eligibility, and deterministic tests. |
-| `realtime` | Framework-agnostic chat-session state: room joining, message de-duplication, presence updates, cooldown, and cleanup. |
-| `reporting` | A declarative builder for a MongoDB aggregation pipeline that produces order metrics by status and currency. |
-| `security` | Explicit, testable configuration for common Express security middleware. |
+| `daily-reward` | Взвешенный выбор приза с инъекцией источника случайных чисел, правило доступности по UTC и детерминированные тесты. |
+| `realtime` | Независимое от фреймворка состояние чат-сессии: подключение к комнате, дедупликация сообщений, presence, cooldown и очистка ресурсов. |
+| `reporting` | Декларативный генератор MongoDB aggregation pipeline для метрик заказов по статусам и валютам. |
+| `security` | Явная, тестируемая конфигурация распространённых middleware безопасности Express. |
 
-## Run checks
+## Запуск проверок
 
-Requires Node.js 20 or newer. There are no runtime dependencies.
+Нужен Node.js 20 или новее. Runtime-зависимости не требуются.
 
 ```bash
 npm test
 npm run check
 ```
 
-## Design notes
+## Подходы к проектированию
 
-The examples prefer dependency injection at boundaries:
+В примерах зависимости передаются через границы модулей:
 
-- `spinDailyReward` receives a clock and an RNG;
-- `createChatSession` receives a socket factory and clock;
-- reporting returns a data-only MongoDB pipeline instead of opening a database connection;
-- security helpers return configuration objects instead of reading process-wide environment variables.
+- `spinDailyReward` получает часы и генератор случайных чисел;
+- `createChatSession` получает фабрику socket-подключения и часы;
+- отчётность возвращает готовый MongoDB pipeline, а не открывает соединение с БД;
+- security-хелперы возвращают объекты конфигурации, а не читают глобальные переменные окружения.
 
-That keeps domain logic deterministic, easy to test, and independent of live services.
+Это делает доменную логику детерминированной, удобной для тестирования и независимой от внешних сервисов.
 
-More details: [architecture notes](docs/architecture.md).
+Подробнее: [архитектурные заметки](docs/architecture.md).
 
